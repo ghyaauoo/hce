@@ -41,7 +41,7 @@ public class ChargeLogService implements IChargeLogService {
         if (users != null && users.size() == 1) {
             List<ChargeLog> chargeLogList = chargeLogMapper.query(new ChargeLogQueryParam(users.get(0).getId()));
             List<ChargeLogVo> chargeLogVos = chargeLogList.stream().map(ChargeLogVo::new).collect(Collectors.toList());
-            return Result.success(ResultType.QUERY_SUCCESS, JSONObject.toJSONString(chargeLogVos));
+            return Result.success(ResultType.QUERY_SUCCESS, chargeLogVos);
         }else {
             return Result.fail(ResultType.QUERY_FAILURE);
         }
