@@ -1,13 +1,20 @@
 package com.hce.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hce.base.entity.vo.Result;
 import com.hce.dao.AccountMapper;
 import com.hce.dao.UserMapper;
 import com.hce.entity.form.UserChgForm;
 import com.hce.entity.form.UserForm;
+import com.hce.entity.form.UserQueryForm;
+import com.hce.entity.form.UserQueryPageForm;
+import com.hce.entity.param.UserQueryPageParam;
 import com.hce.entity.param.UserQueryParam;
 import com.hce.entity.po.Account;
 import com.hce.entity.po.User;
+import com.hce.entity.vo.UserVo;
 import com.hce.exception.ResultType;
 import com.hce.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +45,7 @@ public class UserService implements IUserService {
             User user = userMapper.select(userQueryParam.getUsername());
             if (user != null) {
                 if (user.getPassword().equals(userQueryParam.getPassword())) {
-                    return Result.success(ResultType.LOGIN_SUCCESS);
+                    return Result.success(ResultType.LOGIN_SUCCESS, user.getId());
                 } else {
                     return Result.fail(ResultType.LOGIN_FAIL_INVALID_PASSWORD);
                 }
@@ -87,5 +94,14 @@ public class UserService implements IUserService {
         }catch (Exception e) {
             return Result.fail(ResultType.CHGPWD_FAILURE);
         }
+    }
+
+    @Override
+    public Result queryByPage(UserQueryPageForm userQueryPageForm) {
+        Page page = PageHelper.startPage(userQueryPageForm.getPageNum(), userQueryPageForm.getPageSize());
+        List<UserVo> userVos = userMapper.queryByPage(userQueryPageForm.toParam(UserQueryPageParam.class));
+        PageInfo<UserVo> pageInfo = new PageInfo<>(userVos);
+        pageInfo.setTotal(page.getTotal());
+        return Result.success(pageInfo);
     }
 }

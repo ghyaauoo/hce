@@ -4,6 +4,7 @@ import com.hce.base.entity.vo.Result;
 import com.hce.entity.form.UserChgForm;
 import com.hce.entity.form.UserForm;
 import com.hce.entity.form.UserQueryForm;
+import com.hce.entity.form.UserQueryPageForm;
 import com.hce.entity.param.UserQueryParam;
 import com.hce.service.IUserService;
 import io.swagger.annotations.Api;
@@ -52,5 +53,12 @@ public class UserController {
     @PostMapping(value = "/chgPwd")
     public Result chgPwd(@Valid @RequestBody UserChgForm userChgForm) {
         return userService.chgPwd(userChgForm);
+    }
+
+    @ApiOperation(value = "账户查询接口", notes = "账户查询接口")
+    @ApiImplicitParam(name = "userQueryPageForm", value = "修改密码用户form表单", required = true, dataType = "UserQueryPageForm")
+    @PostMapping(value = "/query")
+    public Result queryByPage(@Valid @RequestBody UserQueryPageForm userQueryPageForm) {
+        return userService.queryByPage(userQueryPageForm);
     }
 }

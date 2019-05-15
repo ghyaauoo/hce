@@ -3,6 +3,8 @@ package com.hce.service;
 import com.hce.base.entity.vo.Result;
 import com.hce.entity.form.UserChgForm;
 import com.hce.entity.form.UserForm;
+import com.hce.entity.form.UserQueryForm;
+import com.hce.entity.form.UserQueryPageForm;
 import com.hce.entity.param.UserQueryParam;
 
 /**
@@ -19,5 +21,7 @@ public interface IUserService {
     Result register(UserForm userForm);
 
     Result chgPwd(UserChgForm userChgForm);
+
+    Result queryByPage(UserQueryPageForm userQueryPageForm);
 
 }

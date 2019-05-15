@@ -30,3 +30,11 @@ logging:
   path: logs/
   file:
     max-size: 1GB
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  returnPageInfo: check

@@ -3,6 +3,8 @@ package com.hce.dao;
 import com.hce.entity.form.ChargeLogQueryForm;
 import com.hce.entity.param.ChargeLogQueryParam;
 import com.hce.entity.po.ChargeLog;
+import com.hce.entity.vo.ChargeLogPageVo;
+import com.hce.entity.vo.ChargeLogVo;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
@@ -54,5 +56,14 @@ public interface ChargeLogMapper {
             "</script>")
     @ResultMap(value = "chargeLog")
     List<ChargeLog> query(ChargeLogQueryParam chargeLogQueryParam);
+
+    @Select("select c.charge,date_format(c.created_time,'%Y-%m-%d %H:%i:%s') as created_time" +
+            " from charge_log c" +
+            " where c.user_id = #{0}")
+    @Results(id = "chargeLogPageVo", value = {
+            @Result(column = "charge", property = "charge", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "created_time", property = "time", jdbcType = JdbcType.VARCHAR)
+    })
+    List<ChargeLogPageVo> queryByUserId();
 
 }
